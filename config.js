@@ -149,6 +149,5 @@ const CONFIG = {
   // --- CONFIGURAÇÕES DO SITE ---
   corAccent:     "#eab308",    // cor principal (hex)
   adminPassword: "kaique2026", // password do painel /admin
-  githubRepo:    "",           // ex: "kaique-stahl/portfolio" — preencher após criar repo
-  githubToken:   ""            // token GitHub com permissão repo:write — preencher após criar
+  githubRepo:    "kaiquestahl2026/portfolio",
 };
