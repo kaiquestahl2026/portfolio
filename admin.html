@@ -468,6 +468,10 @@ function buildConfig() {
     corAccent:     document.getElementById('f-cor').value,
     adminPassword,
     githubRepo:    CONFIG.githubRepo || '',
+    // Internal fields — preserved transparently
+    workerUrl:         CONFIG.workerUrl         || '',
+    workerPortfolioId: CONFIG.workerPortfolioId || '',
+    template:          CONFIG.template          || 1,
   };
 }
 
@@ -490,9 +494,42 @@ async function saveConfig() {
   btn.disabled = true;
   const cfg = buildConfig();
 
+  if (!cfg) { btn.disabled = false; return; }
+  msg.textContent = 'A publicar...';
+  msg.className = 'status-msg';
+
+  // ── MODE 1: Worker-managed portfolio (gerado pelo PortfolioJá) ──
+  if (CONFIG.workerUrl && CONFIG.workerPortfolioId) {
+    try {
+      const res = await fetch(CONFIG.workerUrl + '/api/update', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          portfolioId:   CONFIG.workerPortfolioId,
+          adminPassword: cfg.adminPassword,
+          config:        cfg,
+          fotoBase64:    window._novaFotoBase64 || null,
+        })
+      });
+      const data = await res.json();
+      if (data.success) {
+        msg.textContent = 'Publicado com sucesso! O site atualiza em ~30 segundos.';
+        msg.className = 'status-msg success';
+      } else {
+        throw new Error(data.error || 'Erro desconhecido');
+      }
+    } catch (e) {
+      msg.textContent = 'Erro: ' + e.message;
+      msg.className = 'status-msg error';
+    }
+    btn.disabled = false;
+    return;
+  }
+
+  // ── MODE 2: GitHub-connected portfolio (cliente manual) ──
   const ghToken = getGithubToken();
   if (!CONFIG.githubRepo || !ghToken) {
-    // No GitHub configured — show generated config for manual copy
+    // Fallback: download config.js
     const code = generateConfigJS(cfg);
     const blob = new Blob([code], { type: 'text/javascript' });
     const a = document.createElement('a');
@@ -505,15 +542,10 @@ async function saveConfig() {
     return;
   }
 
-  if (!cfg) { btn.disabled = false; return; }
-  msg.textContent = 'A publicar...';
-  msg.className = 'status-msg';
-
   try {
     const [owner, repo] = CONFIG.githubRepo.split('/');
     const headers = { 'Authorization': 'token ' + ghToken, 'Content-Type': 'application/json' };
 
-    // Get current SHA
     const getResp = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/config.js`, { headers });
     const getJson = await getResp.json();
     const sha = getJson.sha;
