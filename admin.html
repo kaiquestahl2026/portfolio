@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin — Portfolio</title>
+  <script src="./config.js"></script><!-- ajustar path no deploy: ./config.js -->
+  <style>
+    :root { --accent: #3b82f6; --bg: #0a0a0a; --bg2: #111; --card: rgba(255,255,255,0.04); --border: rgba(255,255,255,0.08); --text: #e8e8e8; --muted: #888; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; min-height: 100vh; }
+
+    /* LOGIN */
+    #login-screen { display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+    .login-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 16px; padding: 2.5rem; width: 100%; max-width: 380px; text-align: center; }
+    .login-card h1 { font-size: 1.4rem; margin-bottom: 0.5rem; }
+    .login-card p { color: var(--muted); font-size: 0.85rem; margin-bottom: 2rem; }
+    .login-card input { width: 100%; padding: 0.75rem 1rem; background: var(--card); border: 1px solid var(--border); border-radius: 8px; color: var(--text); font-size: 0.9rem; margin-bottom: 1rem; outline: none; }
+    .login-card input:focus { border-color: var(--accent); }
+    .login-error { color: #f87171; font-size: 0.8rem; margin-top: 0.5rem; display: none; }
+
+    /* ADMIN */
+    #admin-screen { display: none; }
+    .admin-header { background: var(--bg2); border-bottom: 1px solid var(--border); padding: 1rem 2rem; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 10; }
+    .admin-header h1 { font-size: 1rem; }
+    .admin-header span { color: var(--muted); font-size: 0.8rem; }
+    .admin-body { max-width: 860px; margin: 0 auto; padding: 2rem; }
+
+    .section-block { background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; }
+    .section-block h2 { font-size: 0.9rem; color: var(--accent); letter-spacing: 0.05em; margin-bottom: 1.2rem; border-bottom: 1px solid var(--border); padding-bottom: 0.75rem; }
+    label { display: block; font-size: 0.78rem; color: var(--muted); margin-bottom: 0.3rem; margin-top: 0.9rem; }
+    label:first-of-type { margin-top: 0; }
+    input[type=text], input[type=email], input[type=color], textarea, select {
+      width: 100%; padding: 0.65rem 0.9rem; background: var(--card); border: 1px solid var(--border);
+      border-radius: 8px; color: var(--text); font-size: 0.85rem; outline: none; font-family: inherit;
+    }
+    input:focus, textarea:focus { border-color: var(--accent); }
+    textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
+    input[type=color] { height: 38px; padding: 0.2rem; cursor: pointer; }
+
+    /* REPEATABLE LISTS */
+    .repeat-list { display: flex; flex-direction: column; gap: 0.75rem; margin-top: 0.5rem; }
+    .repeat-item { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 1rem; position: relative; }
+    .repeat-item .remove-btn { position: absolute; top: 0.75rem; right: 0.75rem; background: none; border: none; color: #f87171; cursor: pointer; font-size: 1rem; line-height: 1; }
+    .repeat-item label { margin-top: 0.6rem; }
+    .repeat-item label:first-of-type { margin-top: 0; }
+    .add-btn { margin-top: 0.75rem; background: var(--card); border: 1px dashed var(--border); border-radius: 8px; padding: 0.6rem; color: var(--muted); font-size: 0.82rem; cursor: pointer; width: 100%; transition: border-color 0.2s; }
+    .add-btn:hover { border-color: var(--accent); color: var(--text); }
+    .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+    .grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.75rem; }
+
+    /* SKILL NIVEL */
+    .skill-nivel { display: flex; align-items: center; gap: 0.75rem; }
+    .skill-nivel input[type=range] { flex: 1; }
+    .skill-nivel span { font-size: 0.8rem; color: var(--accent); min-width: 2rem; }
+
+    /* ACTIONS */
+    .actions { position: fixed; bottom: 0; left: 0; right: 0; background: var(--bg2); border-top: 1px solid var(--border); padding: 1rem 2rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+    .btn-save { background: var(--accent); color: #fff; border: none; border-radius: 8px; padding: 0.75rem 2rem; font-size: 0.9rem; cursor: pointer; transition: opacity 0.2s; }
+    .btn-save:hover { opacity: 0.85; }
+    .btn-save:disabled { opacity: 0.4; cursor: not-allowed; }
+    .status-msg { font-size: 0.82rem; color: var(--muted); }
+    .status-msg.success { color: #4ade80; }
+    .status-msg.error { color: #f87171; }
+
+    @media (max-width: 600px) { .grid2, .grid3 { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="login-card">
+    <h1>Portfolio Admin</h1>
+    <p>Introduza a password para aceder ao painel de edição</p>
+    <input type="password" id="pw-input" placeholder="Password" onkeydown="if(event.key==='Enter') doLogin()" />
+    <button class="btn-save" style="width:100%" onclick="doLogin()">Entrar</button>
+    <p class="login-error" id="login-error">Password incorreta.</p>
+  </div>
+</div>
+
+<!-- ADMIN -->
+<div id="admin-screen">
+  <div class="admin-header">
+    <h1>✏️ Editar Portfolio</h1>
+    <span id="header-nome"></span>
+  </div>
+
+  <div class="admin-body">
+
+    <!-- IDENTIDADE -->
+    <div class="section-block">
+      <h2>// IDENTIDADE</h2>
+      <div class="grid2">
+        <div>
+          <label>Nome completo</label>
+          <input type="text" id="f-nome" />
+        </div>
+        <div>
+          <label>Título / Cargo</label>
+          <input type="text" id="f-titulo" />
+        </div>
+      </div>
+      <label>Localização</label>
+      <input type="text" id="f-localizacao" />
+      <label>Email</label>
+      <input type="email" id="f-email" />
+      <label>LinkedIn (URL completo)</label>
+      <input type="text" id="f-linkedin" />
+      <label>GitHub (URL completo)</label>
+      <input type="text" id="f-github" />
+      <label>Cor de destaque</label>
+      <input type="color" id="f-cor" />
+    </div>
+
+    <!-- HERO -->
+    <div class="section-block">
+      <h2>// HERO</h2>
+      <label>Nome — Linha 1 (ex: Kaique)</label>
+      <input type="text" id="f-hero1" />
+      <label>Nome — Linha 2 (ex: Stahl)</label>
+      <input type="text" id="f-hero2" />
+      <label>Frase curta sob o nome</label>
+      <textarea id="f-herosub"></textarea>
+    </div>
+
+    <!-- SOBRE -->
+    <div class="section-block">
+      <h2>// SOBRE</h2>
+      <label>Bio (texto completo)</label>
+      <textarea id="f-bio" style="min-height:140px"></textarea>
+    </div>
+
+    <!-- SKILLS -->
+    <div class="section-block">
+      <h2>// COMPETÊNCIAS</h2>
+      <div class="repeat-list" id="skills-list"></div>
+      <button class="add-btn" onclick="addSkill()">+ Adicionar competência</button>
+    </div>
+
+    <!-- EXPERIÊNCIA -->
+    <div class="section-block">
+      <h2>// EXPERIÊNCIA</h2>
+      <div class="repeat-list" id="exp-list"></div>
+      <button class="add-btn" onclick="addExp()">+ Adicionar experiência</button>
+    </div>
+
+    <!-- FORMAÇÃO -->
+    <div class="section-block">
+      <h2>// FORMAÇÃO</h2>
+      <div class="repeat-list" id="edu-list"></div>
+      <button class="add-btn" onclick="addEdu()">+ Adicionar formação</button>
+    </div>
+
+    <!-- CERTIFICAÇÕES -->
+    <div class="section-block">
+      <h2>// CERTIFICAÇÕES</h2>
+      <div class="repeat-list" id="cert-list"></div>
+      <button class="add-btn" onclick="addCert()">+ Adicionar certificação</button>
+    </div>
+
+    <!-- IDIOMAS -->
+    <div class="section-block">
+      <h2>// IDIOMAS</h2>
+      <div class="repeat-list" id="idiomas-list"></div>
+      <button class="add-btn" onclick="addIdioma()">+ Adicionar idioma</button>
+    </div>
+
+    <div style="height:80px"></div><!-- space for fixed bar -->
+  </div>
+
+  <div class="actions">
+    <span class="status-msg" id="status-msg">As alterações serão publicadas em ~1 minuto após guardar.</span>
+    <button class="btn-save" id="save-btn" onclick="saveConfig()">Guardar e Publicar</button>
+  </div>
+</div>
+
+<script>
+// ---- LOGIN ----
+function doLogin() {
+  const pw = document.getElementById('pw-input').value;
+  if (pw === CONFIG.adminPassword) {
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('admin-screen').style.display = 'block';
+    loadForm();
+  } else {
+    document.getElementById('login-error').style.display = 'block';
+  }
+}
+
+// ---- LOAD FORM FROM CONFIG ----
+function loadForm() {
+  document.getElementById('header-nome').textContent = CONFIG.nome;
+  document.getElementById('f-nome').value        = CONFIG.nome || '';
+  document.getElementById('f-titulo').value      = CONFIG.titulo || '';
+  document.getElementById('f-localizacao').value = CONFIG.localizacao || '';
+  document.getElementById('f-email').value       = CONFIG.email || '';
+  document.getElementById('f-linkedin').value    = CONFIG.linkedin || '';
+  document.getElementById('f-github').value      = CONFIG.github || '';
+  document.getElementById('f-cor').value         = CONFIG.corAccent || '#3b82f6';
+  document.getElementById('f-hero1').value       = (CONFIG.nomeHero || [])[0] || '';
+  document.getElementById('f-hero2').value       = (CONFIG.nomeHero || [])[1] || '';
+  document.getElementById('f-herosub').value     = CONFIG.heroSub || '';
+  document.getElementById('f-bio').value         = CONFIG.bio || '';
+
+  // Skills
+  const sl = document.getElementById('skills-list');
+  sl.innerHTML = '';
+  (CONFIG.skills || []).forEach((s, i) => addSkillRow(s, i));
+
+  // Experiência
+  const el = document.getElementById('exp-list');
+  el.innerHTML = '';
+  (CONFIG.experiencia || []).forEach((e, i) => addExpRow(e, i));
+
+  // Formação
+  const fl = document.getElementById('edu-list');
+  fl.innerHTML = '';
+  (CONFIG.formacao || []).forEach((f, i) => addEduRow(f, i));
+
+  // Certs
+  const cl = document.getElementById('cert-list');
+  cl.innerHTML = '';
+  (CONFIG.certificacoes || []).forEach((c, i) => addCertRow(c, i));
+
+  // Idiomas
+  const il = document.getElementById('idiomas-list');
+  il.innerHTML = '';
+  (CONFIG.idiomas || []).forEach((id, i) => addIdiomaRow(id, i));
+}
+
+// ---- SKILL ROWS ----
+let skillIdx = 0;
+function addSkillRow(s, i) {
+  const idx = i !== undefined ? i : skillIdx++;
+  const el = document.createElement('div');
+  el.className = 'repeat-item';
+  el.id = 'skill-' + idx;
+  el.innerHTML = `
+    <button class="remove-btn" onclick="this.parentElement.remove()">✕</button>
+    <div class="grid2">
+      <div><label>Nome</label><input type="text" class="sk-nome" value="${s ? s.nome : ''}" /></div>
+      <div>
+        <label>Nível: <span class="sk-val">${s ? s.nivel : 50}%</span></label>
+        <div class="skill-nivel">
+          <input type="range" min="0" max="100" value="${s ? s.nivel : 50}" class="sk-nivel"
+            oninput="this.parentElement.previousElementSibling.querySelector('.sk-val').textContent=this.value+'%'" />
+        </div>
+      </div>
+    </div>`;
+  document.getElementById('skills-list').appendChild(el);
+}
+function addSkill() { addSkillRow(null); }
+
+// ---- EXP ROWS ----
+let expIdx = 0;
+function addExpRow(e, i) {
+  const idx = i !== undefined ? i : expIdx++;
+  const el = document.createElement('div');
+  el.className = 'repeat-item';
+  el.innerHTML = `
+    <button class="remove-btn" onclick="this.parentElement.remove()">✕</button>
+    <div class="grid2">
+      <div><label>Empresa</label><input type="text" class="ex-empresa" value="${e ? e.empresa : ''}" /></div>
+      <div><label>Cargo</label><input type="text" class="ex-cargo" value="${e ? e.cargo : ''}" /></div>
+    </div>
+    <div class="grid2">
+      <div><label>Período (ex: Jan 2025 — Presente)</label><input type="text" class="ex-periodo" value="${e ? e.periodo : ''}" /></div>
+      <div><label>Local</label><input type="text" class="ex-local" value="${e ? e.local : ''}" /></div>
+    </div>
+    <label>Descrição</label>
+    <textarea class="ex-desc">${e ? e.descricao : ''}</textarea>`;
+  document.getElementById('exp-list').appendChild(el);
+}
+function addExp() { addExpRow(null); }
+
+// ---- EDU ROWS ----
+function addEduRow(f, i) {
+  const el = document.createElement('div');
+  el.className = 'repeat-item';
+  el.innerHTML = `
+    <button class="remove-btn" onclick="this.parentElement.remove()">✕</button>
+    <label>Instituição</label><input type="text" class="ed-inst" value="${f ? f.instituicao : ''}" />
+    <label>Curso</label><input type="text" class="ed-curso" value="${f ? f.curso : ''}" />
+    <div class="grid2">
+      <div><label>Período</label><input type="text" class="ed-periodo" value="${f ? f.periodo : ''}" /></div>
+      <div>
+        <label>Estado</label>
+        <select class="ed-status">
+          <option ${f && f.status==='Em curso' ? 'selected' : ''}>Em curso</option>
+          <option ${f && f.status==='Concluído' ? 'selected' : ''}>Concluído</option>
+        </select>
+      </div>
+    </div>`;
+  document.getElementById('edu-list').appendChild(el);
+}
+function addEdu() { addEduRow(null); }
+
+// ---- CERT ROWS ----
+function addCertRow(c, i) {
+  const el = document.createElement('div');
+  el.className = 'repeat-item';
+  el.style.display = 'flex';
+  el.style.alignItems = 'center';
+  el.style.gap = '0.5rem';
+  el.innerHTML = `
+    <input type="text" class="cert-val" value="${c || ''}" style="flex:1" />
+    <button class="remove-btn" style="position:static" onclick="this.parentElement.remove()">✕</button>`;
+  document.getElementById('cert-list').appendChild(el);
+}
+function addCert() { addCertRow(''); }
+
+// ---- IDIOMA ROWS ----
+function addIdiomaRow(id, i) {
+  const el = document.createElement('div');
+  el.className = 'repeat-item';
+  el.innerHTML = `
+    <button class="remove-btn" onclick="this.parentElement.remove()">✕</button>
+    <div class="grid2">
+      <div><label>Idioma</label><input type="text" class="id-idioma" value="${id ? id.idioma : ''}" /></div>
+      <div><label>Nível (ex: Nativo, Fluente, Básico)</label><input type="text" class="id-nivel" value="${id ? id.nivel : ''}" /></div>
+    </div>`;
+  document.getElementById('idiomas-list').appendChild(el);
+}
+function addIdioma() { addIdiomaRow(null); }
+
+// ---- BUILD CONFIG FROM FORM ----
+function buildConfig() {
+  const skills = [];
+  document.querySelectorAll('#skills-list .repeat-item').forEach(item => {
+    const nome = item.querySelector('.sk-nome').value.trim();
+    const nivel = parseInt(item.querySelector('.sk-nivel').value);
+    if (nome) skills.push({ nome, nivel });
+  });
+
+  const experiencia = [];
+  document.querySelectorAll('#exp-list .repeat-item').forEach(item => {
+    const empresa = item.querySelector('.ex-empresa').value.trim();
+    if (empresa) experiencia.push({
+      empresa,
+      cargo:     item.querySelector('.ex-cargo').value.trim(),
+      periodo:   item.querySelector('.ex-periodo').value.trim(),
+      local:     item.querySelector('.ex-local').value.trim(),
+      descricao: item.querySelector('.ex-desc').value.trim()
+    });
+  });
+
+  const formacao = [];
+  document.querySelectorAll('#edu-list .repeat-item').forEach(item => {
+    const inst = item.querySelector('.ed-inst').value.trim();
+    if (inst) formacao.push({
+      instituicao: inst,
+      curso:       item.querySelector('.ed-curso').value.trim(),
+      periodo:     item.querySelector('.ed-periodo').value.trim(),
+      status:      item.querySelector('.ed-status').value
+    });
+  });
+
+  const certificacoes = [];
+  document.querySelectorAll('#cert-list .cert-val').forEach(el => {
+    if (el.value.trim()) certificacoes.push(el.value.trim());
+  });
+
+  const idiomas = [];
+  document.querySelectorAll('#idiomas-list .repeat-item').forEach(item => {
+    const idioma = item.querySelector('.id-idioma').value.trim();
+    if (idioma) idiomas.push({ idioma, nivel: item.querySelector('.id-nivel').value.trim() });
+  });
+
+  return {
+    nome:        document.getElementById('f-nome').value.trim(),
+    nomeHero:    [document.getElementById('f-hero1').value.trim(), document.getElementById('f-hero2').value.trim()],
+    titulo:      document.getElementById('f-titulo').value.trim(),
+    localizacao: document.getElementById('f-localizacao').value.trim(),
+    email:       document.getElementById('f-email').value.trim(),
+    linkedin:    document.getElementById('f-linkedin').value.trim(),
+    github:      document.getElementById('f-github').value.trim(),
+    heroSub:     document.getElementById('f-herosub').value.trim(),
+    bio:         document.getElementById('f-bio').value.trim(),
+    skills, experiencia, formacao, certificacoes, idiomas,
+    corAccent:     document.getElementById('f-cor').value,
+    adminPassword: CONFIG.adminPassword,
+    githubRepo:    CONFIG.githubRepo || '',
+    githubToken:   CONFIG.githubToken || ''
+  };
+}
+
+// ---- SAVE TO GITHUB ----
+async function saveConfig() {
+  const btn = document.getElementById('save-btn');
+  const msg = document.getElementById('status-msg');
+  const cfg = buildConfig();
+
+  if (!CONFIG.githubRepo || !CONFIG.githubToken) {
+    // No GitHub configured — show generated config for manual copy
+    const code = generateConfigJS(cfg);
+    const blob = new Blob([code], { type: 'text/javascript' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'config.js';
+    a.click();
+    msg.textContent = 'config.js descarregado — substitua o ficheiro no GitHub para publicar.';
+    msg.className = 'status-msg success';
+    return;
+  }
+
+  btn.disabled = true;
+  msg.textContent = 'A publicar...';
+  msg.className = 'status-msg';
+
+  try {
+    const [owner, repo] = CONFIG.githubRepo.split('/');
+    const headers = { 'Authorization': 'token ' + CONFIG.githubToken, 'Content-Type': 'application/json' };
+
+    // Get current SHA
+    const getResp = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/config.js`, { headers });
+    const getJson = await getResp.json();
+    const sha = getJson.sha;
+
+    const content = btoa(unescape(encodeURIComponent(generateConfigJS(cfg))));
+    const putResp = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/config.js`, {
+      method: 'PUT', headers,
+      body: JSON.stringify({ message: 'Update config via admin panel', content, sha })
+    });
+
+    if (putResp.ok) {
+      msg.textContent = 'Publicado com sucesso! O site atualiza em ~1 minuto.';
+      msg.className = 'status-msg success';
+    } else {
+      throw new Error(await putResp.text());
+    }
+  } catch (e) {
+    msg.textContent = 'Erro: ' + e.message;
+    msg.className = 'status-msg error';
+  }
+  btn.disabled = false;
+}
+
+// ---- GENERATE config.js TEXT ----
+function generateConfigJS(cfg) {
+  return `// =====================================================================
+// CONFIGURAÇÃO DO PORTFOLIO — editado via painel admin
+// Última atualização: ${new Date().toLocaleString('pt-PT')}
+// =====================================================================
+
+const CONFIG = ${JSON.stringify(cfg, null, 2)};
+`;
+}
+</script>
+</body>
+</html>
