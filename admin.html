@@ -166,6 +166,33 @@
       <button class="add-btn" onclick="addIdioma()">+ Adicionar idioma</button>
     </div>
 
+    <!-- VÍDEOS / PROJETOS -->
+    <div class="section-block">
+      <h2>// VÍDEOS / PROJETOS</h2>
+      <div class="repeat-list" id="proj-list"></div>
+      <button class="add-btn" onclick="addProj()">+ Adicionar projeto</button>
+    </div>
+
+    <!-- SEGURANÇA -->
+    <div class="section-block">
+      <h2>// SEGURANÇA</h2>
+      <label>Nova password do admin (deixa em branco para não alterar)</label>
+      <input type="password" id="f-newpw" placeholder="Nova password..." />
+      <label>Confirmar nova password</label>
+      <input type="password" id="f-newpw2" placeholder="Repetir password..." />
+    </div>
+
+    <!-- FOTO -->
+    <div class="section-block">
+      <h2>// FOTO DE PERFIL</h2>
+      <div id="foto-preview-wrap" style="margin-bottom:1rem;">
+        <img id="foto-preview" style="width:100px;height:100px;border-radius:50%;object-fit:cover;object-position:center top;border:2px solid var(--accent);" />
+      </div>
+      <label>Selecionar nova foto (JPG ou PNG)</label>
+      <input type="file" id="f-foto" accept="image/jpeg,image/png" onchange="previewFoto(this)" style="padding:0.5rem;cursor:pointer;" />
+      <p style="font-size:0.72rem;color:var(--muted);margin-top:0.5rem;">Os CVs para download não são atualizados automaticamente ao trocar a foto.</p>
+    </div>
+
     <div style="height:80px"></div><!-- space for fixed bar -->
   </div>
 
@@ -203,6 +230,10 @@ function loadForm() {
   document.getElementById('f-herosub').value     = CONFIG.heroSub || '';
   document.getElementById('f-bio').value         = CONFIG.bio || '';
 
+  // Foto atual
+  const fotoSrc = CONFIG.fotoBase64 || CONFIG.foto || '';
+  if (fotoSrc) document.getElementById('foto-preview').src = fotoSrc;
+
   // Skills
   const sl = document.getElementById('skills-list');
   sl.innerHTML = '';
@@ -227,6 +258,11 @@ function loadForm() {
   const il = document.getElementById('idiomas-list');
   il.innerHTML = '';
   (CONFIG.idiomas || []).forEach((id, i) => addIdiomaRow(id, i));
+
+  // Projetos
+  const pl = document.getElementById('proj-list');
+  pl.innerHTML = '';
+  (CONFIG.projetos || []).forEach((p, i) => addProjRow(p, i));
 }
 
 // ---- SKILL ROWS ----
@@ -324,6 +360,33 @@ function addIdiomaRow(id, i) {
 }
 function addIdioma() { addIdiomaRow(null); }
 
+// ---- PROJ ROWS ----
+function addProjRow(p, i) {
+  const el = document.createElement('div');
+  el.className = 'repeat-item';
+  el.innerHTML = `
+    <button class="remove-btn" onclick="this.parentElement.remove()">✕</button>
+    <div class="grid2">
+      <div><label>Título</label><input type="text" class="pj-titulo" value="${p ? p.titulo : ''}" /></div>
+      <div><label>YouTube ID (ex: dQw4w9WgXcQ)</label><input type="text" class="pj-youtube" value="${p ? p.youtube : ''}" placeholder="ID do vídeo" /></div>
+    </div>
+    <label>Descrição curta</label>
+    <input type="text" class="pj-desc" value="${p ? p.desc : ''}" />`;
+  document.getElementById('proj-list').appendChild(el);
+}
+function addProj() { addProjRow(null); }
+
+// ---- FOTO PREVIEW ----
+function previewFoto(input) {
+  if (!input.files || !input.files[0]) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    document.getElementById('foto-preview').src = e.target.result;
+    window._novaFotoBase64 = e.target.result;
+  };
+  reader.readAsDataURL(input.files[0]);
+}
+
 // ---- BUILD CONFIG FROM FORM ----
 function buildConfig() {
   const skills = [];
@@ -367,19 +430,43 @@ function buildConfig() {
     if (idioma) idiomas.push({ idioma, nivel: item.querySelector('.id-nivel').value.trim() });
   });
 
+  const projetos = [];
+  document.querySelectorAll('#proj-list .repeat-item').forEach(item => {
+    const titulo = item.querySelector('.pj-titulo').value.trim();
+    if (titulo) projetos.push({
+      titulo,
+      desc:    item.querySelector('.pj-desc').value.trim(),
+      youtube: item.querySelector('.pj-youtube').value.trim()
+    });
+  });
+
+  const fotoBase64 = window._novaFotoBase64 || CONFIG.fotoBase64 || '';
+
+  const newPw = document.getElementById('f-newpw').value;
+  const newPw2 = document.getElementById('f-newpw2').value;
+  if (newPw && newPw !== newPw2) {
+    document.getElementById('status-msg').textContent = 'As passwords não coincidem.';
+    document.getElementById('status-msg').className = 'status-msg error';
+    return null;
+  }
+  const adminPassword = (newPw && newPw === newPw2) ? newPw : CONFIG.adminPassword;
+
   return {
     nome:        document.getElementById('f-nome').value.trim(),
     nomeHero:    [document.getElementById('f-hero1').value.trim(), document.getElementById('f-hero2').value.trim()],
     titulo:      document.getElementById('f-titulo').value.trim(),
     localizacao: document.getElementById('f-localizacao').value.trim(),
     email:       document.getElementById('f-email').value.trim(),
+    telefone:    CONFIG.telefone || '',
+    foto:        CONFIG.foto || 'foto.jpg',
+    fotoBase64,
     linkedin:    document.getElementById('f-linkedin').value.trim(),
     github:      document.getElementById('f-github').value.trim(),
     heroSub:     document.getElementById('f-herosub').value.trim(),
     bio:         document.getElementById('f-bio').value.trim(),
-    skills, experiencia, formacao, certificacoes, idiomas,
+    skills, experiencia, formacao, certificacoes, idiomas, projetos,
     corAccent:     document.getElementById('f-cor').value,
-    adminPassword: CONFIG.adminPassword,
+    adminPassword,
     githubRepo:    CONFIG.githubRepo || '',
     githubToken:   CONFIG.githubToken || ''
   };
@@ -389,7 +476,9 @@ function buildConfig() {
 async function saveConfig() {
   const btn = document.getElementById('save-btn');
   const msg = document.getElementById('status-msg');
+  btn.disabled = true;
   const cfg = buildConfig();
+  btn.disabled = false;
 
   if (!CONFIG.githubRepo || !CONFIG.githubToken) {
     // No GitHub configured — show generated config for manual copy
@@ -404,6 +493,7 @@ async function saveConfig() {
     return;
   }
 
+  if (!cfg) { btn.disabled = false; return; }
   btn.disabled = true;
   msg.textContent = 'A publicar...';
   msg.className = 'status-msg';
