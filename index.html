@@ -350,8 +350,8 @@
 
 
     // Foto
-    if (CONFIG.foto) {
-      document.getElementById("hero-photo").src = CONFIG.foto;
+    if (CONFIG.fotoBase64 || CONFIG.foto) {
+      document.getElementById("hero-photo").src = CONFIG.fotoBase64 || CONFIG.foto;
       document.getElementById("hero-photo").alt = CONFIG.nome;
       document.getElementById("hero-photo-wrap").style.display = "";
     }
