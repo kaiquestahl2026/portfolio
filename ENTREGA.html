@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Entrega Portfolio — Kaique Stahl Martins</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', Arial, sans-serif; background: #f8fafc; color: #0f172a; padding: 2rem 1rem; }
+    .doc { max-width: 720px; margin: 0 auto; background: #fff; border-radius: 16px; box-shadow: 0 4px 24px rgba(0,0,0,0.08); overflow: hidden; }
+
+    .header { background: #0f172a; padding: 2.5rem 2.5rem 2rem; color: #fff; }
+    .header-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.5rem; }
+    .logo { font-size: 1rem; font-weight: 800; letter-spacing: -0.02em; }
+    .logo span { color: #eab308; }
+    .date { font-size: 0.75rem; color: rgba(255,255,255,0.5); }
+    .header h1 { font-size: 1.6rem; font-weight: 800; letter-spacing: -0.03em; margin-bottom: 0.4rem; }
+    .header p { font-size: 0.9rem; color: rgba(255,255,255,0.6); }
+
+    .body { padding: 2.5rem; }
+
+    .section { margin-bottom: 2rem; }
+    .section-title { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #eab308; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid #fef9c3; }
+
+    .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+    .info-item { background: #f8fafc; border-radius: 10px; padding: 1rem; border: 1px solid #e2e8f0; }
+    .info-label { font-size: 0.7rem; color: #64748b; margin-bottom: 0.3rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+    .info-value { font-size: 0.9rem; font-weight: 600; color: #0f172a; word-break: break-all; }
+    .info-value a { color: #eab308; text-decoration: none; }
+    .info-value a:hover { text-decoration: underline; }
+    .info-value.accent { color: #eab308; }
+
+    .feature-list { display: flex; flex-direction: column; gap: 0.6rem; }
+    .feature-item { display: flex; align-items: flex-start; gap: 0.75rem; padding: 0.85rem 1rem; background: #f8fafc; border-radius: 10px; border: 1px solid #e2e8f0; }
+    .feature-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 0.05rem; }
+    .feature-text { font-size: 0.85rem; color: #334155; line-height: 1.5; }
+    .feature-text strong { color: #0f172a; display: block; margin-bottom: 0.1rem; }
+
+    .admin-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; }
+    .admin-item { background: #f8fafc; border-radius: 10px; padding: 0.85rem 1rem; border: 1px solid #e2e8f0; font-size: 0.82rem; color: #334155; display: flex; align-items: center; gap: 0.6rem; }
+    .admin-item::before { content: '✓'; color: #16a34a; font-weight: 700; flex-shrink: 0; }
+
+    .highlight-box { background: #fefce8; border: 1.5px solid #eab308; border-radius: 12px; padding: 1.25rem 1.5rem; }
+    .highlight-box p { font-size: 0.85rem; color: #713f12; line-height: 1.7; }
+    .highlight-box strong { color: #0f172a; }
+
+    .warn-box { background: #fff7ed; border: 1.5px solid #f97316; border-radius: 12px; padding: 1.25rem 1.5rem; }
+    .warn-box p { font-size: 0.83rem; color: #9a3412; line-height: 1.7; }
+
+    .steps { display: flex; flex-direction: column; gap: 0.6rem; counter-reset: step; }
+    .step-item { display: flex; gap: 1rem; align-items: flex-start; padding: 0.85rem 1rem; background: #f8fafc; border-radius: 10px; border: 1px solid #e2e8f0; }
+    .step-num { width: 26px; height: 26px; border-radius: 50%; background: #eab308; color: #0f172a; font-size: 0.75rem; font-weight: 800; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .step-text { font-size: 0.85rem; color: #334155; line-height: 1.5; padding-top: 0.1rem; }
+    .step-text strong { color: #0f172a; }
+
+    .footer { background: #f1f5f9; padding: 1.5rem 2.5rem; border-top: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; }
+    .footer p { font-size: 0.75rem; color: #64748b; }
+    .footer strong { color: #0f172a; }
+
+    @media (max-width: 560px) {
+      .info-grid, .admin-grid { grid-template-columns: 1fr; }
+      .header-top { flex-direction: column; gap: 0.5rem; }
+      .body { padding: 1.5rem; }
+    }
+
+    @media print {
+      body { background: #fff; padding: 0; }
+      .doc { box-shadow: none; border-radius: 0; }
+    }
+  </style>
+</head>
+<body>
+<div class="doc">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-top">
+      <div class="logo">ADVX <span>Portfolio</span></div>
+      <div class="date">Entregue em 11 de outubro de 2026</div>
+    </div>
+    <h1>Portfolio Profissional</h1>
+    <p>Kaique Stahl Martins — Técnico Mecânico &amp; Tecnólogo em Automação Industrial</p>
+  </div>
+
+  <div class="body">
+
+    <!-- ACESSOS -->
+    <div class="section">
+      <div class="section-title">Acessos e Links</div>
+      <div class="info-grid">
+        <div class="info-item">
+          <div class="info-label">Portfolio Online</div>
+          <div class="info-value"><a href="https://kaique-stahl-site.pages.dev" target="_blank">kaique-stahl-site.pages.dev</a></div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">Painel de Administração</div>
+          <div class="info-value"><a href="https://kaique-stahl-site.pages.dev/admin.html" target="_blank">kaique-stahl-site.pages.dev/admin.html</a></div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">Password do Admin</div>
+          <div class="info-value accent">kaique2026</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">GitHub (ficheiros do site)</div>
+          <div class="info-value"><a href="https://github.com/kaiquestahl2026/portfolio" target="_blank">github.com/kaiquestahl2026/portfolio</a></div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">CV Português</div>
+          <div class="info-value"><a href="https://kaique-stahl-site.pages.dev/Kaique_Stahl_CV_PT.html" target="_blank">Download CV PT</a></div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">CV Inglês</div>
+          <div class="info-value"><a href="https://kaique-stahl-site.pages.dev/Kaique_Stahl_CV_EN.html" target="_blank">Download CV EN</a></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- O QUE TEM O PORTFOLIO -->
+    <div class="section">
+      <div class="section-title">O que está incluído no Portfolio</div>
+      <div class="feature-list">
+        <div class="feature-item">
+          <div class="feature-icon">👤</div>
+          <div class="feature-text">
+            <strong>Página de apresentação completa</strong>
+            Hero com nome em destaque, foto de perfil circular, frase de impacto e botão de contacto.
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon">⚙️</div>
+          <div class="feature-text">
+            <strong>Competências com barras animadas</strong>
+            8 competências (SolidWorks, AutoCAD, Inventor, PLC, Robótica, etc.) com nível visual em percentagem.
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon">💼</div>
+          <div class="feature-text">
+            <strong>Experiência profissional</strong>
+            4 entradas: Afonso &amp; Irmãos (Desenhista + Estágio), Grupo BT e Fatec Tatuí (Monitor).
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon">🎓</div>
+          <div class="feature-text">
+            <strong>Formação académica</strong>
+            CST em Automação Industrial (Fatec), Mobilidade IPB e Técnico em Mecânica (COTIL/UNICAMP).
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon">🎬</div>
+          <div class="feature-text">
+            <strong>8 vídeos de projetos SolidWorks</strong>
+            Galeria de projetos em vídeo (YouTube embed): Agrade, Motor 4 Cilindros, Catraca, Morsa, Balde, Caixa de Carga, Capinadeira e mais.
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon">📄</div>
+          <div class="feature-text">
+            <strong>Currículos para download</strong>
+            CV em Português e CV em Inglês, com foto incorporada, prontos a imprimir.
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon">📱</div>
+          <div class="feature-text">
+            <strong>Contacto</strong>
+            Botões de telefone (+351 935 293 372), email e LinkedIn na secção de contacto.
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon">📱</div>
+          <div class="feature-text">
+            <strong>Totalmente responsivo</strong>
+            Funciona em telemóvel, tablet e computador.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ADMIN PANEL -->
+    <div class="section">
+      <div class="section-title">O que podes editar no Painel Admin</div>
+      <div class="admin-grid">
+        <div class="admin-item">Nome e título profissional</div>
+        <div class="admin-item">Frase de impacto do hero</div>
+        <div class="admin-item">Bio / Sobre mim</div>
+        <div class="admin-item">Foto de perfil</div>
+        <div class="admin-item">Email e localização</div>
+        <div class="admin-item">LinkedIn e GitHub</div>
+        <div class="admin-item">Cor de destaque do site</div>
+        <div class="admin-item">Competências e níveis</div>
+        <div class="admin-item">Experiência profissional</div>
+        <div class="admin-item">Formação académica</div>
+        <div class="admin-item">Certificações</div>
+        <div class="admin-item">Idiomas</div>
+        <div class="admin-item">Títulos dos vídeos</div>
+        <div class="admin-item">Trocar / apagar vídeos</div>
+        <div class="admin-item">Adicionar novos vídeos</div>
+        <div class="admin-item">Descrição dos projetos</div>
+      </div>
+    </div>
+
+    <!-- COMO USAR O ADMIN -->
+    <div class="section">
+      <div class="section-title">Como usar o Painel Admin</div>
+      <div class="steps">
+        <div class="step-item">
+          <div class="step-num">1</div>
+          <div class="step-text">Vai a <strong>kaique-stahl-site.pages.dev/admin.html</strong></div>
+        </div>
+        <div class="step-item">
+          <div class="step-num">2</div>
+          <div class="step-text">Introduz a password: <strong>kaique2026</strong></div>
+        </div>
+        <div class="step-item">
+          <div class="step-num">3</div>
+          <div class="step-text">Edita o que precisares — altera campos, adiciona ou remove entradas</div>
+        </div>
+        <div class="step-item">
+          <div class="step-num">4</div>
+          <div class="step-text">Clica em <strong>"Guardar e Publicar"</strong> — o site atualiza automaticamente</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DOMÍNIO PRÓPRIO -->
+    <div class="section">
+      <div class="section-title">Queres um Domínio Próprio?</div>
+      <div class="highlight-box">
+        <p>O teu portfolio está em <strong>kaique-stahl-site.pages.dev</strong> (domínio gratuito Cloudflare). Se quiseres um endereço personalizado como <strong>kaiquestahl.com</strong> ou <strong>kaiquestahl.pt</strong>, basta avisar — tratamos de tudo e o site passa para o domínio próprio sem perder nada.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <p>Desenvolvido por <strong>ADVX</strong> · <a href="https://advx.us" style="color:#eab308;text-decoration:none;">advx.us</a></p>
+    <p>Suporte: <strong>Robson Advincula</strong></p>
+  </div>
+
+</div>
+</body>
+</html>
