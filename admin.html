@@ -468,8 +468,19 @@ function buildConfig() {
     corAccent:     document.getElementById('f-cor').value,
     adminPassword,
     githubRepo:    CONFIG.githubRepo || '',
-    githubToken:   CONFIG.githubToken || ''
   };
+}
+
+// ---- GITHUB TOKEN (stored in localStorage, never in config.js) ----
+function getGithubToken() {
+  const stored = localStorage.getItem('kaique_gh_token');
+  if (stored) return stored;
+  // Migrate from config.js on first run
+  if (CONFIG.githubToken) {
+    localStorage.setItem('kaique_gh_token', CONFIG.githubToken);
+    return CONFIG.githubToken;
+  }
+  return null;
 }
 
 // ---- SAVE TO GITHUB ----
@@ -478,9 +489,9 @@ async function saveConfig() {
   const msg = document.getElementById('status-msg');
   btn.disabled = true;
   const cfg = buildConfig();
-  btn.disabled = false;
 
-  if (!CONFIG.githubRepo || !CONFIG.githubToken) {
+  const ghToken = getGithubToken();
+  if (!CONFIG.githubRepo || !ghToken) {
     // No GitHub configured — show generated config for manual copy
     const code = generateConfigJS(cfg);
     const blob = new Blob([code], { type: 'text/javascript' });
@@ -490,17 +501,17 @@ async function saveConfig() {
     a.click();
     msg.textContent = 'config.js descarregado — substitua o ficheiro no GitHub para publicar.';
     msg.className = 'status-msg success';
+    btn.disabled = false;
     return;
   }
 
   if (!cfg) { btn.disabled = false; return; }
-  btn.disabled = true;
   msg.textContent = 'A publicar...';
   msg.className = 'status-msg';
 
   try {
     const [owner, repo] = CONFIG.githubRepo.split('/');
-    const headers = { 'Authorization': 'token ' + CONFIG.githubToken, 'Content-Type': 'application/json' };
+    const headers = { 'Authorization': 'token ' + ghToken, 'Content-Type': 'application/json' };
 
     // Get current SHA
     const getResp = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/config.js`, { headers });
