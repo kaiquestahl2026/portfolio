@@ -173,6 +173,17 @@
       <button class="add-btn" onclick="addProj()">+ Adicionar projeto</button>
     </div>
 
+    <!-- PUBLICAÇÃO -->
+    <div class="section-block" id="token-section" style="display:none">
+      <h2>// PUBLICAÇÃO (configurar uma vez)</h2>
+      <p style="font-family:var(--font-mono);font-size:0.75rem;color:var(--muted);margin-bottom:0.75rem;">Cola aqui o token que te foi enviado para ativar a publicação automática. Só precisas de fazer isto uma vez.</p>
+      <div style="display:flex;gap:0.5rem;align-items:center;">
+        <input type="password" id="f-gh-token" placeholder="Token de publicação..." style="flex:1" />
+        <button onclick="saveGhToken()" style="padding:0.6rem 1.2rem;background:var(--accent);color:#0f172a;border:none;border-radius:8px;font-weight:700;cursor:pointer;white-space:nowrap;">Guardar token</button>
+      </div>
+      <p id="token-status" style="font-family:var(--font-mono);font-size:0.72rem;margin-top:0.5rem;display:none"></p>
+    </div>
+
     <!-- SEGURANÇA -->
     <div class="section-block">
       <h2>// SEGURANÇA</h2>
@@ -210,6 +221,7 @@ function doLogin() {
     document.getElementById('login-screen').style.display = 'none';
     document.getElementById('admin-screen').style.display = 'block';
     loadForm();
+    checkTokenStatus();
   } else {
     document.getElementById('login-error').style.display = 'block';
   }
@@ -479,12 +491,29 @@ function buildConfig() {
 function getGithubToken() {
   const stored = localStorage.getItem('kaique_gh_token');
   if (stored) return stored;
-  // Migrate from config.js on first run
   if (CONFIG.githubToken) {
     localStorage.setItem('kaique_gh_token', CONFIG.githubToken);
     return CONFIG.githubToken;
   }
   return null;
+}
+
+function checkTokenStatus() {
+  if (!getGithubToken()) {
+    document.getElementById('token-section').style.display = '';
+  }
+}
+
+function saveGhToken() {
+  const val = document.getElementById('f-gh-token').value.trim();
+  if (!val) return;
+  localStorage.setItem('kaique_gh_token', val);
+  document.getElementById('f-gh-token').value = '';
+  const st = document.getElementById('token-status');
+  st.style.display = '';
+  st.style.color = '#10b981';
+  st.textContent = 'Token guardado. Podes agora usar o botão Guardar e Publicar normalmente.';
+  document.getElementById('token-section').style.border = '1px solid #10b981';
 }
 
 // ---- SAVE TO GITHUB ----
