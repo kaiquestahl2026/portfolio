@@ -1,153 +1,175 @@
 // =====================================================================
-// CONFIGURAÇÃO DO PORTFOLIO — edite apenas este ficheiro
-// Após guardar, o site atualiza automaticamente em ~1 minuto
+// CONFIGURAÇÃO DO PORTFOLIO — editado via painel admin
+// Última atualização: 14/10/2026, 23:22:54
 // =====================================================================
 
 const CONFIG = {
-
-  // --- IDENTIDADE ---
-  nome:        "Kaique Stahl Martins",
-  nomeHero:    ["Kaique", "Stahl"],          // [linha1, linha2] no hero
-  titulo:      "Técnico Mecânico & Tecnólogo em Automação Industrial",
-  localizacao: "Bragança, Portugal",
-  email:       "kaiquestahlmartins@gmail.com",
-  telefone:    "+351 935 293 372",
-  foto:        "foto.jpg",                    // ficheiro de foto na mesma pasta
-  linkedin:    "https://www.linkedin.com/in/kaique-stahl-martins",
-  github:      "",                            // ex: https://github.com/kaique
-
-  // --- HERO (frase curta) ---
-  heroSub: "Técnico mecânico com experiência em modelação 3D, PLC e automação industrial — baseado em Bragança, disponível para projetos remotos com empresas do Brasil.",
-
-  // --- SOBRE (bio completa) ---
-  bio: "Sou técnico mecânico formado pelo COTIL (UNICAMP) e estudante de Automação Industrial pela FATEC Tatuí (último ano). Realizei mobilidade académica no Instituto Politécnico de Bragança, aprofundando conhecimentos em PLC, programação Ladder, SolidWorks, Robótica e Organização Industrial. Tenho experiência em desenho técnico e modelagem mecânica com AutoCAD e Inventor, adquirida como monitor universitário e em projetos industriais. Estou aberto a oportunidades em Manutenção, Projetos Mecânicos e Automação Industrial, inclusive remotamente com empresas do Brasil.",
-
-  // --- COMPETÊNCIAS (nivel: 0-100) ---
-  skills: [
-    { nome: "SolidWorks",             nivel: 85 },
-    { nome: "Desenho Técnico",        nivel: 90 },
-    { nome: "AutoCAD",                nivel: 80 },
-    { nome: "Inventor",               nivel: 75 },
-    { nome: "PLC / Programação Ladder", nivel: 70 },
-    { nome: "Robótica Industrial",    nivel: 65 },
-    { nome: "Excel / Power BI",       nivel: 60 },
-    { nome: "Gestão de Almoxarifado", nivel: 65 }
+  "nome": "Kaique Stahl Martins",
+  "nomeHero": [
+    "Kaique",
+    "Stahl Martins"
   ],
-
-  // --- EXPERIÊNCIA ---
-  experiencia: [
+  "titulo": "Técnico Mecânico & Tecnólogo em Automação Industrial",
+  "localizacao": "Bragança, Portugal",
+  "email": "kaiquestahlmartins@gmail.com",
+  "telefone": "+351 935 293 372",
+  "foto": "foto.jpg",
+  "fotoBase64": "",
+  "linkedin": "https://www.linkedin.com/in/kaique-stahl-martins",
+  "github": "",
+  "heroSub": "Técnico mecânico com experiência em modelação 3D, complementado pelo domínio avançado do SolidWorks no desenvolvimento de peças, conjuntos, chapas e estruturas. Especialista em detalhamento técnico 2D, simulações mecânicas FEA e otimização de componentes industriais. Disponível para suporte e desenvolvimento de projetos remotos com empresas do Brasil.",
+  "bio": "Técnico mecânico formado pelo Colégio Técnico de Limeira - UNICAMP e estudante do último período de Automação Industrial pela FATEC, com mobilidade acadêmica na Universidade Politécnica de Bragança. Possuo domínio avançado do SolidWorks no desenvolvimento de peças, montagens 3D, chapas metálicas, estruturas soldadas, detalhamento técnico 2D e simulações mecânicas FEA, atualmente estou ampliando meus conhecimentos em Instalações Elétricas, Comunicações Industriais e Sistemas Ciberfísicos. Possuo experiência complementar em AutoCAD, Inventor, Programação Ladder, Robótica e Organização Industrial, ambos adquiridos em Portugal. Estou aberto a oportunidades em Projetos Mecânicos e Automação Industrial, incluindo atuação remota com empresas do Brasil.",
+  "skills": [
     {
-      empresa:   "Afonso & Irmãos, Lda.",
-      cargo:     "Desenhista Mecânico",
-      periodo:   "Jul 2026 — Presente",
-      local:     "Bragança, Portugal",
-      descricao: "Desenvolvimento, modelação 3D e detalhamento técnico de implementos agrícolas com SolidWorks. Criação de peças, conjuntos e documentação técnica para o setor agroindustrial, com foco em soluções eficientes e inovadoras."
+      "nome": "SolidWorks",
+      "nivel": 90
     },
     {
-      empresa:   "Afonso & Irmãos, Lda.",
-      cargo:     "Estagiário",
-      periodo:   "Abr 2026 — Jun 2026",
-      local:     "Bragança, Portugal",
-      descricao: "Desenvolvimento de peças e montagens no SolidWorks para catálogo de produtos próprios. Gestão de almoxarifado e recebimento, contribuindo para a eficiência e estruturação dos processos."
+      "nome": "Desenho Técnico",
+      "nivel": 90
     },
     {
-      empresa:   "Grupo BT — EPI e MRO",
-      cargo:     "Aprendiz de Controller",
-      periodo:   "Set 2025 — Fev 2026",
-      local:     "Tatuí, SP, Brasil",
-      descricao: "Aprendizagem de processos de controlo e gestão em empresa especializada em EPI e MRO industrial."
+      "nome": "AutoCAD",
+      "nivel": 85
     },
     {
-      empresa:   "Fatec Tatuí",
-      cargo:     "Monitor de Desenho Técnico",
-      periodo:   "Ago 2024 — Jul 2025",
-      local:     "Tatuí, SP, Brasil",
-      descricao: "Monitoria de Desenho Técnico para cursos de Automação e Manutenção Industrial. Desenvolvimento de liderança e comunicação ao apoiar colegas no período noturno."
+      "nome": "Inventor",
+      "nivel": 90
+    },
+    {
+      "nome": "PLC / Programação Ladder",
+      "nivel": 80
+    },
+    {
+      "nome": "Robótica Industrial",
+      "nivel": 80
+    },
+    {
+      "nome": "Excel / Power BI",
+      "nivel": 90
+    },
+    {
+      "nome": "Gestão e Organização Industrial",
+      "nivel": 80
     }
   ],
-
-  // --- FORMAÇÃO ---
-  formacao: [
+  "experiencia": [
     {
-      instituicao: "Fatec Tatuí",
-      curso:       "CST em Automação Industrial",
-      periodo:     "2024 — 2026",
-      status:      "Em curso"
+      "empresa": "Afonso & Irmãos, Lda.",
+      "cargo": "Desenhista Mecânico",
+      "periodo": "Jul 2026 — Presente",
+      "local": "Bragança, Portugal",
+      "descricao": "Desenvolvimento completo de implementos e maquinário para o setor agroindustrial utilizando o ecossistema SolidWorks. Atuação especializada na concepção tridimensional de componentes mecânicos, conjuntos estruturais de alta resistência, chaparia metálica e sistemas soldados. Elaboração de documentação técnica rigorosa para produção, incluindo desenhos 2D padronizados, tolerâncias dimensionais, especificações de materiais e listas de corte e fabricação, focando no aumento de produtividade, robustez de campo e inovação tecnológica."
     },
     {
-      instituicao: "Instituto Politécnico de Bragança",
-      curso:       "Mobilidade — Tecnologia e Gestão",
-      periodo:     "Fev 2026 — Jul 2026",
-      status:      "Concluído"
+      "empresa": "Afonso & Irmãos, Lda.",
+      "cargo": "Estagiário",
+      "periodo": "Abr 2026 — Jun 2026",
+      "local": "Bragança, Portugal",
+      "descricao": "Responsável pelo projeto e modelação 3D de peças e conjuntos no SolidWorks para a expansão e consolidação do catálogo de produtos da marca. Coordenação das rotinas de almoxarifado, recebimento de matérias-primas e gestão de inventário, otimizando a rastreabilidade de suprimentos e contribuindo para a melhoria dos processos logísticos e de produção."
     },
     {
-      instituicao: "COTIL — Colégio Técnico de Limeira (UNICAMP)",
-      curso:       "Curso Técnico em Mecânica",
-      periodo:     "2021 — 2023",
-      status:      "Concluído"
+      "empresa": "Grupo BT — EPI e MRO",
+      "cargo": "Aprendiz de Controller",
+      "periodo": "Set 2025 — Fev 2026",
+      "local": "Tatuí, SP, Brasil",
+      "descricao": "Vivência e aprimoramento prático nos processos de controle e gestão operacional em empresa especializada em Equipamentos de Proteção Individual (EPI) e suprimentos de Manutenção, Reparo e Operação (MRO) industrial. Atuação voltada ao acompanhamento de fluxos logísticos, controle de estoque, padronização de rotinas e suporte à eficiência organizacional do setor."
+    },
+    {
+      "empresa": "Fatec Tatuí",
+      "cargo": "Monitor de Desenho Técnico",
+      "periodo": "Ago 2024 — Jul 2025",
+      "local": "Tatuí, SP, Brasil",
+      "descricao": "Atuação como monitor de Desenho Técnico para os cursos de Automação Industrial e Manutenção Industrial no período noturno. Responsável pelo suporte técnico na interpretação de desenhos, modelagem e normas, aliando o desenvolvimento de liderança, comunicação assertiva e didática na resolução de dúvidas e no acompanhamento do aprendizado dos alunos."
     }
   ],
-
-  // --- CERTIFICAÇÕES ---
-  certificacoes: [
+  "formacao": [
+    {
+      "instituicao": "Fatec Tatuí",
+      "curso": "CST em Automação Industrial",
+      "periodo": "2024 — 2026",
+      "status": "Em curso"
+    },
+    {
+      "instituicao": "Universidade Politécnica de Bragança",
+      "curso": "Mobilidade - Licenciatura/Mestrado em Engenharia Mecânica/Eletrotécnica",
+      "periodo": "Fev 2026 — Fev 2027",
+      "status": "Em curso"
+    },
+    {
+      "instituicao": "Colégio Técnico de Limeira - UNICAMP",
+      "curso": "Técnico em Mecânica",
+      "periodo": "2021 — 2023",
+      "status": "Concluído"
+    }
+  ],
+  "certificacoes": [
     "Aspire Leaders Program",
     "Desvendando a Inteligência Artificial: Aplicações e Desafios",
-    "Introdução ao Excel e Power BI — Dashboards com a Klabin",
-    "FECITEC — Feira de Ciências e Tecnologia do COTIL"
+    "Pacote Office Completo",
+    "FECITEC — Feira de Ciências e Tecnologia do COTIL",
+    "Informática"
   ],
-
-  // --- IDIOMAS ---
-  idiomas: [
-    { idioma: "Português", nivel: "Nativo" },
-    { idioma: "Inglês",    nivel: "Básico"  }
-  ],
-
-  // --- PROJETOS ---
-  projetos: [
+  "idiomas": [
     {
-      titulo:   "Agrade com Abertura",
-      desc:     "Modelação 3D de grade agrícola com mecanismo de abertura",
-      youtube:  "I5dbW_fiTfE"
+      "idioma": "Português",
+      "nivel": "Nativo"
     },
     {
-      titulo:   "Motor 4 Cilindros",
-      desc:     "Montagem completa de motor de 4 cilindros em SolidWorks",
-      youtube:  "TTyu3rSP5Ps"
+      "idioma": "Inglês",
+      "nivel": "A2"
     },
     {
-      titulo:   "Montagem Catraca",
-      desc:     "Mecanismo de catraca — modelação e montagem 3D",
-      youtube:  "25DpDlCL1PE"
-    },
-    {
-      titulo:   "Morsa",
-      desc:     "Montagem de morsa industrial com movimento funcional",
-      youtube:  "LMwQ5hfT98g"
-    },
-    {
-      titulo:   "Balde",
-      desc:     "Modelação 3D de balde para implemento agrícola",
-      youtube:  "zS8q6yU0HPc"
-    },
-    {
-      titulo:   "Caixa de Carga",
-      desc:     "Projeto e detalhamento técnico de caixa de carga",
-      youtube:  "C80hvZqTQYc"
-    },
-    {
-      titulo:   "Capinadeira",
-      desc:     "Implemento agrícola — capinadeira modelada em SolidWorks",
-      youtube:  "iJiGAU7iaTA"
-    },
-    {
-      titulo:   "Projeto 8",
-      desc:     "Modelação 3D em SolidWorks",
-      youtube:  "I_oBaRLiBTE"
+      "idioma": "Espanhol",
+      "nivel": "A1"
     }
   ],
-
-  // --- CONFIGURAÇÕES DO SITE ---
-  corAccent:     "#eab308",    // cor principal (hex)
-  adminPassword: "kaique2026", // password do painel /admin
-  githubRepo:    "kaiquestahl2026/portfolio",
+  "projetos": [
+    {
+      "titulo": "Capinadeira",
+      "desc": "Implemento agrícola",
+      "youtube": "I5dbW_fiTfE"
+    },
+    {
+      "titulo": "Caixa de Carga",
+      "desc": "Implemento agrícola",
+      "youtube": "TTyu3rSP5Ps"
+    },
+    {
+      "titulo": "Balde",
+      "desc": "Implemento agrícola",
+      "youtube": "25DpDlCL1PE"
+    },
+    {
+      "titulo": "Morsa",
+      "desc": "Equipamento industrial",
+      "youtube": "LMwQ5hfT98g"
+    },
+    {
+      "titulo": "Morsa para Tubos",
+      "desc": "Equipamento industrial",
+      "youtube": "zS8q6yU0HPc"
+    },
+    {
+      "titulo": "Catraca",
+      "desc": "Equipamento de proteção",
+      "youtube": "C80hvZqTQYc"
+    },
+    {
+      "titulo": "Motor 4 Cilindros em Linha",
+      "desc": "Montagem automotiva",
+      "youtube": "iJiGAU7iaTA"
+    },
+    {
+      "titulo": "Agrade",
+      "desc": "Implemento agrícola",
+      "youtube": "I_oBaRLiBTE"
+    }
+  ],
+  "corAccent": "#eab308",
+  "adminPassword": "kaique2026",
+  "githubRepo": "kaiquestahl2026/portfolio",
+  "workerUrl": "",
+  "workerPortfolioId": "",
+  "template": 1
 };
